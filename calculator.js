@@ -25,4 +25,4 @@ console.log(calc.add(4, 3));
 console.log(calc.subtract(10, 5)); 
 console.log(calc.multiply(6, 6));  
 console.log(calc.divide(16, 2));   
-console.log(calc.divide(17, 0));  
+console.log(calc.divide(17, 0)); 
