@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/chimgeeerka/academy-node.js/issues"
   },
+    "dependencies": {
+    "inquirer": "^12.10.0"
+  },
   "homepage": "https://github.com/chimgeeerka/academy-node.js#readme"
 }
