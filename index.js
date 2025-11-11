@@ -1,55 +1,104 @@
 import fs from "node:fs/promises";
 import inquirer from "inquirer";
+import { bankAnswer } from "./bank.js";
 
-const { username, password } = await inquirer.prompt([
-  {
-    type: "input",
-    name: "username",
-    message: "Neree oruulna uu"
-  },
-  {
-    type: "password",
-    name: "password",
-    message: "password oruulna uu"
-  }
-  // {
-  //   type: "select",
-  //   name: "action",
-  //   choices: ["Deposit", "Withdraw"],
-  //   message: "Ymar uildel hiih we"
-  // }
-]);
+const getUsers = async () => {
+  const userRawData = await fs.readFile("users.json", "utf-8");
+  const users = JSON.parse(userRawData);
 
-const userRawData = await fs.readFile("users.json", "utf8");
+  return users;
+};
 
-const users = JSON.parse(userRawData);
-const user = users.find(value => {
-  return value.name == username && value.password == password;
-});
+const login = async () => {
+  const { username, password } = await inquirer.prompt([
+    {
+      type: "input",
+      name: "username",
+      message: "Enter your username"
+    },
+    {
+      type: "password",
+      name: "password",
+      message: "Enter your password"
+    }
+  ]);
 
-if (!user) {
-  console.log("ner eswel nuuts ug buruu bn!");
-  process.exit();
-}
+  const users = await getUsers();
 
-const historyRawData = await fs.readFile("history.json", "utf8");
 
-const history = JSON.parse(historyRawData);
-
-if (!history[user.name]) {
-  history[user.name] = [];
-}
-
-history[user.name].push({ amount: 1000, action: "deposit" });
-
-const historyString = JSON.stringify(history);
-
-fs.writeFile("history.json", historyString)
-  .then(() => {
-    console.log("Amjilttai bayrtai!");
-    process.exit();
-  })
-  .catch(e => {
-    console.log(e);
-    console.log("aldaa garlaa");
+  const user = users.find(value => {
+    return value.username === username && value.password === password;
   });
+
+  if (!user) {
+    console.log("username eswel password buruu bn!");
+    await auth();
+  } else {
+    return bankAnswer(users, user);
+  }
+};
+
+const signup = async () => {
+  const { username, password, passwordVerify } = await inquirer.prompt([
+    {
+      type: "input",
+      name: "username",
+      message: "Enter your username"
+    },
+    {
+      type: "password",
+      name: "password",
+      message: "Enter your password"
+    },
+    {
+      type: "password",
+      name: "passwordVerify",
+      message: "Enter your password again"
+    }
+  ]);
+
+  if (password !== passwordVerify) {
+    console.log("Password validation failed!");
+    return signup();
+  }
+
+  const users = await getUsers();
+
+  const user = users.find(value => {
+    return value.username === username;
+  });
+
+  if (user) {
+    console.log("Username not valid");
+    return signup();
+  }
+
+  users.push({ username, password, balance: 0 });
+
+  const userData = JSON.stringify(users);
+
+  await fs.writeFile("users.json", userData, "utf-8");
+
+  console.log("Amjilttai burtguulle!");
+
+  return login();
+};
+
+const auth = async () => {
+  const { authOption } = await inquirer.prompt([
+    {
+      type: "select",
+      name: "authOption",
+      message: "Login Or Signup",
+      choices: ["Login", "Signup"]
+    }
+  ]);
+
+  if (authOption === "Login") {
+    return login();
+  } else {
+    return signup();
+  }
+};
+
+auth();
