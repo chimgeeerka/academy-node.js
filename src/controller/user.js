@@ -9,7 +9,7 @@ import {
 } from "../services/user.js";
 
 export const createUser = async (req, res) => {
-  const { username, email, password, id, firstname, lastname } = req.body;
+  const { username, email, password } = req.body;
 
   const user = await createUserService(username, email, password);
 

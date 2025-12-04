@@ -1,8 +1,14 @@
 // Шинэ данс үүсгэх
+import {
+  createAccountService,
+
+} from "../services/bank.js";
 export const createAccount = async (req, res) => {
   const { user_id, account_number, balance } = req.body;
-  res.json({});
+  const user = await createAccountService(user_id, account_number, balance);
+  res.json({user});
 };
+
 
 // Дансны мэдээллийг шинэчлэх
 export const updateAccount = async (req, res) => {

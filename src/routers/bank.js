@@ -1,15 +1,12 @@
 import { Router } from "express";
 import {
 
-  getTransactions,
-  getTransactionsByAccountNumber,
   createAccount,
   updateAccount,
   deleteAccount,
   getAllAccounts,
   getAccountByNumber,
-  updateTransaction,
-  deleteTransaction,
+
 } from "../controller/bank.js";
 
 export const bankRouters = new Router();
@@ -21,12 +18,14 @@ bankRouters.post("/accounts", createAccount);
 bankRouters.put("/accounts/:accountNumber", updateAccount);
 bankRouters.delete("/accounts/:accountNumber", deleteAccount);
 
-Transaction-related
-bankRouters.get("/transactions", getTransactions);
-bankRouters.get(
-  "/accounts/:accountNumber/transactions",
-  getTransactionsByAccountNumber,
-);
-bankRouters.post("/transactions", createTransaction);
-bankRouters.put("/transactions/:transactionId", updateTransaction);
-bankRouters.delete("/transactions/:transactionId", deleteTransaction);
+
+
+// Transaction-related
+// bankRouters.get("/transactions", getTransactions);
+// bankRouters.get(
+//   "/accounts/:accountNumber/transactions",
+//   getTransactionsByAccountNumber,
+// );
+// bankRouters.post("/transactions", createTransaction);
+// bankRouters.put("/transactions/:transactionId", updateTransaction);
+// bankRouters.delete("/transactions/:transactionId", deleteTransaction);
