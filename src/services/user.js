@@ -96,12 +96,12 @@ export const getUserTransactionsService = async (id) => {
 //   return response.rows[0];
 // };
 
-// export const getUserAccountsService = async (id) => {
-//   const response = await db.query(
-//     `SELECT * FROM accounts WHERE user_id = ${id}`,
-//   );
-//   return response.rows;
-// };
+export const getUserAccountsService = async (id) => {
+  const response = await db.query(
+    `SELECT * FROM accounts WHERE user_id = ${id}`,
+  );
+  return response.rows;
+};
 
 // export const getUserTransactionsService = async (id) => {
 //   const response = await db.query(
